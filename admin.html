@@ -38,28 +38,24 @@
         <button id="resetBtn" class="btn">Reset ke Default</button>
       </div>
 
-      <div class="notice">Tambah produk baru</div>
+      <div class="notice">Tambah Game Baru</div>
       <div class="admin-row">
         <div class="row">
-          <input id="new_name" class="control-input" placeholder="Nama produk" />
+          <input id="new_name" class="control-input" placeholder="Nama game" />
           <input id="new_id" class="control-input" placeholder="ID (unik, lowercase)" />
         </div>
         <div class="row">
           <input id="new_server" class="control-input" placeholder="Server (opsional)" />
-          <input id="new_price" class="control-input" placeholder="Harga dasar" type="number" />
-          <input id="new_stock" class="control-input" placeholder="Stok" type="number" />
-        </div>
-        <div class="row">
-          <input id="new_nominals" class="control-input" placeholder="Nominal (pisahkan koma)" />
         </div>
         <textarea id="new_desc" class="control-input" placeholder="Deskripsi singkat"></textarea>
-        <button id="addProductBtn" class="btn">Tambah Produk</button>
+        <button id="addProductBtn" class="btn">Tambah Game</button>
       </div>
 
       <div id="adminProducts" class="admin-grid"></div>
     </section>
   </main>
 
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

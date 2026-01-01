@@ -1,5 +1,11 @@
 {
-  "dependencies": {
+  "name": "pidey-store",
+  "version": "1.0.0",
+  "description": "Static Pidey Store - top up game site",
+  "scripts": {
+    "test": "node run-tests.js"
+  },
+  "devDependencies": {
     "jsdom": "^22.1.0"
   }
 }

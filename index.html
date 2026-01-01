@@ -24,29 +24,39 @@
 
     <section>
       <h3>Daftar Game</h3>
-      <div id="products" class="grid"></div>
+      <div id="gameList" class="grid"></div>
+    </section>
+
+    <section>
+      <h3 id="chooseTitle">Pilih Paket</h3>
+      <div id="productGrid" class="grid"></div>
     </section>
   </main>
 
-  <template id="product-template">
-    <div class="card">
+  <template id="game-template">
+    <div class="card game-card">
       <div class="card-body">
-        <h4 class="product-name"></h4>
-        <p class="product-status"></p>
-        <p class="product-details"></p>
-        <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.4rem">
-          <label style="flex:1">
-            Pilih Nominal:
-            <select class="nominal-select"></select>
-          </label>
-          <div class="price-display muted" style="min-width:110px;text-align:right">Rp 0</div>
-        </div>
-        <input type="text" class="buyer-name" placeholder="Nama pembeli (wajib)" />
-        <button class="order-btn">Order via WhatsApp</button>
+        <h4 class="game-name"></h4>
+        <p class="game-desc muted"></p>
+        <div class="game-meta muted"></div>
+        <button class="btn select-game">Lihat Paket</button>
       </div>
     </div>
   </template>
 
+  <template id="item-template">
+    <div class="card product-card">
+      <div class="card-body">
+        <h4 class="item-nominal"></h4>
+        <p class="item-price"></p>
+        <p class="item-stock muted"></p>
+        <input type="text" class="buyer-name" placeholder="Nama pembeli (wajib)" />
+        <button class="order-btn">Order Sekarang</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
