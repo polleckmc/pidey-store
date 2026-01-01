@@ -56,8 +56,12 @@ function saveGames(games){
 // --- USER PAGE ---
 let SELECTED_GAME = null;
 
-function renderGameList(){
-  const games = loadGames();
+function renderGameList(filter){
+  const q = (filter || '').toLowerCase();
+  const games = loadGames().filter(g => {
+    if(!q) return true;
+    return (g.name + ' ' + (g.server||'') + ' ' + g.id).toLowerCase().includes(q);
+  });
   const container = document.getElementById('gameList');
   if(!container) return;
   container.innerHTML = '';
@@ -139,8 +143,11 @@ function initAdmin(){
     const pass = document.getElementById('password').value.trim();
     if(user === ADMIN_USER.username && pass === ADMIN_USER.password){
       document.getElementById('loginBox').classList.add('hidden');
-      document.getElementById('adminPanel').classList.remove('hidden');
+      const layout = document.getElementById('adminLayout');
+      if(layout) layout.classList.remove('hidden');
       renderAdminGames();
+      // show default panel
+      showPanel('panelGames');
     }else{
       alert('Login gagal');
     }
@@ -344,8 +351,23 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// Small helper to show a specific admin panel
+function showPanel(id){
+  const panels = document.querySelectorAll('.panel');
+  panels.forEach(p => p.classList.add('hidden'));
+  const el = document.getElementById(id);
+  if(el) el.classList.remove('hidden');
+  // update active link
+  document.querySelectorAll('.s-link').forEach(a=>{
+    a.classList.toggle('active', a.dataset.target === id);
+  });
+}
+
 // Initialize based on page
 window.addEventListener('DOMContentLoaded', ()=>{
+  // wire search if present
+  const search = document.getElementById('gameSearch');
+  if(search) search.addEventListener('input', (e)=> renderGameList(e.target.value.trim()));
   renderGameList();
   initAdmin();
 
@@ -361,4 +383,16 @@ window.addEventListener('DOMContentLoaded', ()=>{
   if(rst) rst.addEventListener('click', resetDefaults);
   const addBtn = document.getElementById('addProductBtn');
   if(addBtn) addBtn.addEventListener('click', addNewGameFromForm);
+
+  // Sidebar nav wiring
+  document.querySelectorAll('.s-link').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const target = a.dataset.target;
+      // require login
+      const lb = document.getElementById('loginBox');
+      if(lb && !lb.classList.contains('hidden')){ alert('Silakan login terlebih dahulu'); return; }
+      showPanel(target);
+    });
+  });
 });
