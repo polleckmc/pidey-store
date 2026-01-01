@@ -1,5 +1,8 @@
 # Pidey Store — Static Top Up Website
 
+[![CI](https://github.com/polleckmc/pidey-store/actions/workflows/ci.yml/badge.svg)](https://github.com/polleckmc/pidey-store/actions/workflows/ci.yml)
+[![Pages Deploy](https://github.com/polleckmc/pidey-store/actions/workflows/pages.yml/badge.svg)](https://github.com/polleckmc/pidey-store/actions/workflows/pages.yml)
+
 Simple static website to sell game top-ups and direct orders to WhatsApp.
 
 Files:
