@@ -76,11 +76,31 @@ function renderGameList(filter){
     btn.addEventListener('click', ()=>{
       SELECTED_GAME = g.id;
       renderProductGrid(g.id);
-      document.getElementById('chooseTitle').textContent = `Paket untuk ${g.name}`;
-      window.scrollTo({ top: 300, behavior: 'smooth' });
+      const titleEl = document.getElementById('chooseTitle');
+      if(titleEl) titleEl.textContent = `Paket untuk ${g.name}`;
+      if(typeof window !== 'undefined' && typeof window.scrollTo === 'function'){
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+      }
     });
     container.appendChild(node);
   });
+
+  // Auto-select first active game when none selected (improves UX)
+  try{
+    const productGrid = document.getElementById('productGrid');
+    if(!SELECTED_GAME && productGrid && productGrid.children.length === 0 && games.length > 0){
+      const firstActive = games.find(x => x.active) || games[0];
+      if(firstActive){
+        SELECTED_GAME = firstActive.id;
+        renderProductGrid(firstActive.id);
+        const titleEl = document.getElementById('chooseTitle');
+        if(titleEl) titleEl.textContent = `Paket untuk ${firstActive.name}`;
+      }
+    }
+  }catch(e){
+    // fail silently in environments without full DOM
+    console.warn('Auto-select skipped:', e && e.message);
+  }
 }
 
 function renderProductGrid(gameId){
@@ -91,6 +111,17 @@ function renderProductGrid(gameId){
   container.innerHTML = '';
   if(!game) return;
   const tpl = document.getElementById('item-template');
+  if(!tpl){
+    // fallback message if template missing
+    container.innerHTML = '<div class="muted">Template paket tidak tersedia.</div>';
+    return;
+  }
+
+  if(!game.products || !game.products.length){
+    container.innerHTML = '<div class="muted">Tidak ada paket untuk game ini.</div>';
+    return;
+  }
+
   game.products.forEach((it, idx) => {
     const node = tpl.content.cloneNode(true);
     const card = node.querySelector('.product-card');
@@ -107,10 +138,10 @@ function renderProductGrid(gameId){
 
     if(it.stock <= 0){
       orderBtn.disabled = true;
-      node.classList.add('soldout');
+      card.classList.add('soldout');
       if(soldOverlay) soldOverlay.classList.remove('hidden');
     } else {
-      node.classList.remove('soldout');
+      card.classList.remove('soldout');
       if(soldOverlay) soldOverlay.classList.add('hidden');
     }
 
