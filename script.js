@@ -144,19 +144,56 @@ function renderProductGrid(gameId){
 }
 
 // --- ADMIN ---
+function bindAdminUI(){
+  const layout = document.getElementById('adminLayout');
+  const tpl = document.getElementById('admin-layout-template');
+  // only populate once
+  if(tpl && layout && !layout.querySelector('.admin-layout-inner')){
+    layout.innerHTML = '';
+    layout.appendChild(tpl.content.cloneNode(true));
+  }
+
+  // Wire buttons inside admin layout
+  const exp = document.getElementById('exportBtn');
+  if(exp) exp.addEventListener('click', exportGames);
+  const imp = document.getElementById('importFile');
+  if(imp) imp.addEventListener('change', (e)=>{
+    const f = e.target.files && e.target.files[0]; if(f) importGamesFile(f);
+  });
+  const rst = document.getElementById('resetBtn');
+  if(rst) rst.addEventListener('click', resetDefaults);
+  const addBtn = document.getElementById('addProductBtn');
+  if(addBtn) addBtn.addEventListener('click', addNewGameFromForm);
+
+  // Sidebar nav wiring (these links now exist)
+  document.querySelectorAll('.s-link').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const target = a.dataset.target;
+      showPanel(target);
+    });
+  });
+}
+
 function initAdmin(){
   const loginBtn = document.getElementById('loginBtn');
   if(!loginBtn) return;
+  const username = document.getElementById('username');
+  if(username) username.focus();
   loginBtn.addEventListener('click', ()=>{
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
     if(user === ADMIN_USER.username && pass === ADMIN_USER.password){
       document.getElementById('loginBox').classList.add('hidden');
       const layout = document.getElementById('adminLayout');
-      if(layout) layout.classList.remove('hidden');
-      renderAdminGames();
-      // show default panel
-      showPanel('panelGames');
+      if(layout){
+        // reveal and populate admin UI
+        layout.classList.remove('hidden');
+        bindAdminUI();
+        renderAdminGames();
+        // show default panel
+        showPanel('panelGames');
+      }
     }else{
       alert('Login gagal');
     }
@@ -391,28 +428,5 @@ window.addEventListener('DOMContentLoaded', ()=>{
   renderGameList();
   initAdmin();
 
-  // Wire admin controls (if present)
-  const exp = document.getElementById('exportBtn');
-  if(exp) exp.addEventListener('click', exportGames);
-  const imp = document.getElementById('importFile');
-  if(imp) imp.addEventListener('change', (e)=>{
-    const f = e.target.files && e.target.files[0];
-    if(f) importGamesFile(f);
-  });
-  const rst = document.getElementById('resetBtn');
-  if(rst) rst.addEventListener('click', resetDefaults);
-  const addBtn = document.getElementById('addProductBtn');
-  if(addBtn) addBtn.addEventListener('click', addNewGameFromForm);
-
-  // Sidebar nav wiring
-  document.querySelectorAll('.s-link').forEach(a=>{
-    a.addEventListener('click', (e)=>{
-      e.preventDefault();
-      const target = a.dataset.target;
-      // require login
-      const lb = document.getElementById('loginBox');
-      if(lb && !lb.classList.contains('hidden')){ alert('Silakan login terlebih dahulu'); return; }
-      showPanel(target);
-    });
-  });
+  // Admin UI is populated only after successful login; bindings occur in bindAdminUI().
 });

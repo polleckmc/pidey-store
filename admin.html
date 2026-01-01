@@ -25,51 +25,55 @@
       <p class="muted">Hint: username/password diset di script (hardcoded).</p>
     </section>
 
-    <div id="adminLayout" class="admin-layout hidden">
-      <aside class="sidebar">
-        <nav>
-          <a href="#" data-target="panelGames" class="s-link"><svg class="icon"><use href="/assets/icons.svg#icon-games"></use></svg> Games</a>
-          <a href="#" data-target="panelTools" class="s-link"><svg class="icon"><use href="/assets/icons.svg#icon-tools"></use></svg> Tools</a>
-          <a href="#" data-target="panelAddGame" class="s-link"><svg class="icon"><use href="/assets/icons.svg#icon-add"></use></svg> Tambah Game</a>
-        </nav>
-      </aside>
+    <div id="adminLayout" class="admin-layout hidden"></div>
 
-      <section class="admin-content">
-        <div id="panelTools" class="panel">
-          <h2>Tools</h2>
-          <div class="notice">Admin tools: export/import produk, reset default.</div>
+    <template id="admin-layout-template">
+      <div class="admin-layout-inner">
+        <aside class="sidebar">
+          <nav>
+            <a href="#" data-target="panelGames" class="s-link"><svg class="icon"><use href="/assets/icons.svg#icon-games"></use></svg> Games</a>
+            <a href="#" data-target="panelTools" class="s-link"><svg class="icon"><use href="/assets/icons.svg#icon-tools"></use></svg> Tools</a>
+            <a href="#" data-target="panelAddGame" class="s-link"><svg class="icon"><use href="/assets/icons.svg#icon-add"></use></svg> Tambah Game</a>
+          </nav>
+        </aside>
 
-          <div style="display:flex;gap:.5rem;margin-bottom:.6rem;flex-wrap:wrap">
-            <button id="exportBtn" class="btn">Export Produk</button>
-            <label class="btn" style="cursor:pointer">
-              Import Produk
-              <input id="importFile" type="file" accept=".json" style="display:none" />
-            </label>
-            <button id="resetBtn" class="btn">Reset ke Default</button>
-          </div>
-        </div>
+        <section class="admin-content">
+          <div id="panelTools" class="panel">
+            <h2>Tools</h2>
+            <div class="notice">Admin tools: export/import produk, reset default.</div>
 
-        <div id="panelAddGame" class="panel hidden">
-          <h2>Tambah Game Baru</h2>
-          <div class="admin-row">
-            <div class="row">
-              <input id="new_name" class="control-input" placeholder="Nama game" />
-              <input id="new_id" class="control-input" placeholder="ID (unik, lowercase)" />
+            <div style="display:flex;gap:.5rem;margin-bottom:.6rem;flex-wrap:wrap">
+              <button id="exportBtn" class="btn">Export Produk</button>
+              <label class="btn" style="cursor:pointer">
+                Import Produk
+                <input id="importFile" type="file" accept=".json" style="display:none" />
+              </label>
+              <button id="resetBtn" class="btn">Reset ke Default</button>
             </div>
-            <div class="row">
-              <input id="new_server" class="control-input" placeholder="Server (opsional)" />
-            </div>
-            <textarea id="new_desc" class="control-input" placeholder="Deskripsi singkat"></textarea>
-            <button id="addProductBtn" class="btn">Tambah Game</button>
           </div>
-        </div>
 
-        <div id="panelGames" class="panel hidden">
-          <h2>Kelola Game</h2>
-          <div id="adminProducts" class="admin-grid"></div>
-        </div>
-      </section>
-    </div>
+          <div id="panelAddGame" class="panel hidden">
+            <h2>Tambah Game Baru</h2>
+            <div class="admin-row">
+              <div class="row">
+                <input id="new_name" class="control-input" placeholder="Nama game" />
+                <input id="new_id" class="control-input" placeholder="ID (unik, lowercase)" />
+              </div>
+              <div class="row">
+                <input id="new_server" class="control-input" placeholder="Server (opsional)" />
+              </div>
+              <textarea id="new_desc" class="control-input" placeholder="Deskripsi singkat"></textarea>
+              <button id="addProductBtn" class="btn">Tambah Game</button>
+            </div>
+          </div>
+
+          <div id="panelGames" class="panel hidden">
+            <h2>Kelola Game</h2>
+            <div id="adminProducts" class="admin-grid"></div>
+          </div>
+        </section>
+      </div>
+    </template>
   </main>
 
   <script src="data.js"></script>

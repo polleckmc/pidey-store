@@ -12,6 +12,37 @@
     <div id="results"></div>
   </div>
 
+  <!-- Minimal admin login markup for tests -->
+  <div id="loginBox" class="login-box">
+    <h3>Admin Login</h3>
+    <input id="username" placeholder="username" />
+    <input id="password" type="password" placeholder="password" />
+    <button id="loginBtn">Login</button>
+  </div>
+  <div id="adminLayout" class="admin-layout hidden"></div>
+  <template id="admin-layout-template">
+    <div class="admin-layout-inner">
+      <aside class="sidebar">
+        <nav>
+          <a href="#" data-target="panelGames" class="s-link">Games</a>
+          <a href="#" data-target="panelTools" class="s-link">Tools</a>
+        </nav>
+      </aside>
+
+      <section class="admin-content">
+        <div id="panelTools" class="panel">
+          <h2>Tools</h2>
+          <button id="exportBtn" class="btn">Export</button>
+          <input id="importFile" type="file" />
+          <button id="resetBtn" class="btn">Reset</button>
+        </div>
+        <div id="panelGames" class="panel hidden">
+          <div id="adminProducts"></div>
+        </div>
+      </section>
+    </div>
+  </template>
+
   <script src="data.js"></script>
   <script src="script.js"></script>
   <script>
@@ -86,6 +117,20 @@
           const afterReset = loadGames();
           if(afterReset.find(x=>x.id==='mlbb')) log(true, 'resetDefaults restored defaults'); else log(false, 'resetDefaults did not restore');
         }
+
+        // Test 6: Admin UI visibility before and after login
+        const preSidebar = document.querySelector('.sidebar');
+        if(!preSidebar) log(true, 'Sidebar not present before login'); else log(false, 'Sidebar present before login');
+
+        // simulate login
+        document.getElementById('username').value = 'admin';
+        document.getElementById('password').value = 'pidey123';
+        document.getElementById('loginBtn').click();
+        await new Promise(r => setTimeout(r, 200));
+        const postSidebar = document.querySelector('.sidebar');
+        const lb = document.getElementById('loginBox');
+        const lay = document.getElementById('adminLayout');
+        if(postSidebar && lay && !lay.classList.contains('hidden') && lb && lb.classList.contains('hidden')) log(true, 'Sidebar appears after login and login box hidden'); else log(false, 'Sidebar did not appear after login');
 
         log(true, 'All scripted checks finished');
       }catch(err){
