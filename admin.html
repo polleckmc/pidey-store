@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pidey Store — Admin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo">Pidey Store — Admin</h1>
+      <nav>
+        <a href="index.html" class="btn small">Back to Store</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container admin">
+    <section class="login-box" id="loginBox">
+      <h2>Admin Login</h2>
+      <input id="username" placeholder="Username" />
+      <input id="password" type="password" placeholder="Password" />
+      <button id="loginBtn" class="btn">Login</button>
+      <p class="muted">Hint: username/password diset di script (hardcoded).</p>
+    </section>
+
+    <section id="adminPanel" class="hidden">
+      <h2>Kelola Produk</h2>
+      <div class="notice">Admin tools: export/import produk, reset default, tambah produk baru.</div>
+
+      <div style="display:flex;gap:.5rem;margin-bottom:.6rem;flex-wrap:wrap">
+        <button id="exportBtn" class="btn">Export Produk</button>
+        <label class="btn" style="cursor:pointer">
+          Import Produk
+          <input id="importFile" type="file" accept=".json" style="display:none" />
+        </label>
+        <button id="resetBtn" class="btn">Reset ke Default</button>
+      </div>
+
+      <div class="notice">Tambah produk baru</div>
+      <div class="admin-row">
+        <div class="row">
+          <input id="new_name" class="control-input" placeholder="Nama produk" />
+          <input id="new_id" class="control-input" placeholder="ID (unik, lowercase)" />
+        </div>
+        <div class="row">
+          <input id="new_server" class="control-input" placeholder="Server (opsional)" />
+          <input id="new_price" class="control-input" placeholder="Harga dasar" type="number" />
+          <input id="new_stock" class="control-input" placeholder="Stok" type="number" />
+        </div>
+        <div class="row">
+          <input id="new_nominals" class="control-input" placeholder="Nominal (pisahkan koma)" />
+        </div>
+        <textarea id="new_desc" class="control-input" placeholder="Deskripsi singkat"></textarea>
+        <button id="addProductBtn" class="btn">Tambah Produk</button>
+      </div>
+
+      <div id="adminProducts" class="admin-grid"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

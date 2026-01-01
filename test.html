@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pidey Store — Test Runner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Automated Test Runner — Pidey Store</h2>
+    <div id="results"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    (async function(){
+      // Avoid UI blocking dialogs in headless test
+      window.alert = ()=>{};
+      window.confirm = ()=>true;
+
+      const out = document.getElementById('results');
+      function log(ok, msg){
+        const el = document.createElement('div');
+        el.textContent = (ok? '✅ ':'❌ ') + msg;
+        el.style.marginBottom = '.4rem';
+        out.appendChild(el);
+      }
+
+      try{
+        // Test 1: reset defaults
+        if(typeof resetDefaults === 'function'){
+          resetDefaults();
+          log(true, 'resetDefaults() executed');
+        } else {
+          localStorage.setItem('pidey_products_v1', JSON.stringify(DEFAULT_PRODUCTS));
+          log(true, 'localStorage set to DEFAULT_PRODUCTS');
+        }
+
+        const products = loadProducts();
+        if(Array.isArray(products) && products.length >= 3) log(true, 'loadProducts returned array with >=3 items'); else log(false, 'loadProducts failed or returned insufficient items');
+
+        const ml = products.find(p=>p.id==='mlbb');
+        if(ml && ml.stock === 10) log(true, 'mlbb initial stock is 10'); else log(false, `mlbb stock mismatch (found ${ml?ml.stock:'N/A'})`);
+
+        // Test 2: Order flow (simulate one order)
+        const before = ml.stock;
+        // simulate order logic from script
+        if(before > 0){
+          const all = loadProducts();
+          const p = all.find(x=>x.id==='mlbb');
+          p.stock = Math.max(0, p.stock - 1);
+          saveProducts(all);
+          const after = loadProducts().find(x=>x.id==='mlbb').stock;
+          if(after === before - 1) log(true, 'Order simulation decremented stock'); else log(false, 'Order simulation did not decrement correctly');
+        } else {
+          log(false, 'mlbb had no stock to simulate order');
+        }
+
+        // Test 3: Admin add product
+        // Create inputs expected by addNewProductFromForm
+        const makeInput = (id, val)=>{ let el = document.getElementById(id); if(!el){ el = document.createElement('input'); el.id = id; document.body.appendChild(el);} el.value = val; };
+        makeInput('new_name','Test Game'); makeInput('new_id','testgame'); makeInput('new_server','EU'); makeInput('new_price','5000'); makeInput('new_stock','7'); makeInput('new_nominals','5000,10000'); // desc is textarea
+        let desc = document.getElementById('new_desc'); if(!desc){ desc = document.createElement('textarea'); desc.id='new_desc'; document.body.appendChild(desc);} desc.value = 'Test game desc';
+        if(typeof addNewProductFromForm === 'function'){
+          addNewProductFromForm();
+          const added = loadProducts().find(x=>x.id==='testgame');
+          if(added && added.name==='Test Game') log(true, 'addNewProductFromForm added product'); else log(false, 'addNewProductFromForm failed');
+        } else {
+          log(false, 'addNewProductFromForm not found');
+        }
+
+        // Test 4: Export/Import
+        // Prepare modified products JSON
+        const allBefore = loadProducts();
+        const blown = JSON.parse(JSON.stringify(allBefore));
+        if(blown.length>0){ blown[0].name = 'MODIFIED_NAME_TEST'; }
+        // Create a File and call importProductsFile
+        if(typeof importProductsFile === 'function'){
+          const f = new File([JSON.stringify(blown)], 'import.json', {type:'application/json'});
+          await new Promise((res)=>{ importProductsFile(f); // function will async FileReader
+            // small delay to let FileReader complete
+            setTimeout(res, 400);
+          });
+          const afterImport = loadProducts();
+          if(afterImport[0] && afterImport[0].name === 'MODIFIED_NAME_TEST') log(true, 'importProductsFile replaced products'); else log(false, 'importProductsFile did not replace products');
+          // restore
+          saveProducts(allBefore);
+        } else {
+          log(false, 'importProductsFile not available');
+        }
+
+        // Test 5: Reset returns to default
+        if(typeof resetDefaults === 'function'){
+          resetDefaults();
+          const afterReset = loadProducts();
+          if(afterReset.find(x=>x.id==='mlbb')) log(true, 'resetDefaults restored defaults'); else log(false, 'resetDefaults did not restore');
+        }
+
+        log(true, 'All scripted checks finished');
+      }catch(err){
+        log(false, 'Test runner error: ' + err.message);
+      }
+    })();
+  </script>
+</body>
+</html>
