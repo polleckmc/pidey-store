@@ -95,18 +95,23 @@ function renderProductGrid(gameId){
     const node = tpl.content.cloneNode(true);
     const card = node.querySelector('.product-card');
     const nominalEl = node.querySelector('.item-nominal');
-    const priceEl = node.querySelector('.item-price');
+    const priceBadge = node.querySelector('.price-badge');
     const stockEl = node.querySelector('.item-stock');
     const nameInput = node.querySelector('.buyer-name');
     const orderBtn = node.querySelector('.order-btn');
+    const soldOverlay = node.querySelector('.soldout-overlay');
 
     nominalEl.textContent = it.nominal;
-    priceEl.textContent = `Rp ${numberFormat(it.price)}`;
+    priceBadge.textContent = `Rp ${numberFormat(it.price)}`;
     stockEl.textContent = it.stock > 0 ? `Tersedia • Stok: ${it.stock}` : 'Habis';
 
     if(it.stock <= 0){
       orderBtn.disabled = true;
-      card.style.opacity = '0.5';
+      node.classList.add('soldout');
+      if(soldOverlay) soldOverlay.classList.remove('hidden');
+    } else {
+      node.classList.remove('soldout');
+      if(soldOverlay) soldOverlay.classList.add('hidden');
     }
 
     orderBtn.addEventListener('click', ()=>{
@@ -114,6 +119,10 @@ function renderProductGrid(gameId){
       if(!buyer && !confirm('Nama pembeli kosong. Lanjut sebagai "Pembeli"?')) return;
       const confirmMsg = `Konfirmasi: ${game.name} - ${it.nominal} - Rp ${numberFormat(it.price)}\nUntuk: ${buyer || 'Pembeli'}\nLanjutkan ke WhatsApp?`;
       if(!confirm(confirmMsg)) return;
+
+      // Button micro animation
+      orderBtn.classList.add('ordered');
+      setTimeout(()=> orderBtn.classList.remove('ordered'), 400);
 
       // Decrement stock for this product
       const all = loadGames();

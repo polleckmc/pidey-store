@@ -12,12 +12,39 @@
 .search-input{padding:.4rem .6rem;border-radius:6px;border:0;background:transparent;color:inherit;min-width:220px}
 
 /* Card & Panel animations */
-.card{transition:transform .18s ease,box-shadow .18s ease,opacity .18s ease}
+.card{transition:transform .18s ease,box-shadow .18s ease,opacity .18s ease;border:1px solid rgba(255,255,255,0.03)}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(20,18,35,0.6)}
 .card-enter{opacity:0;transform:translateY(8px)}
 .card-enter-active{opacity:1;transform:translateY(0);transition:opacity .18s ease,transform .18s ease}
 
 .panel{opacity:1;transform:none;transition:opacity .22s ease,transform .22s ease}
 .panel.hidden{opacity:0;transform:translateY(8px);pointer-events:none}
+
+/* product card visuals */
+.product-card{position:relative;overflow:hidden}
+.product-card .price-badge{position:absolute;right:12px;top:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:.35rem .65rem;border-radius:999px;font-weight:700;box-shadow:0 6px 14px rgba(37,99,235,0.12)}
+.product-card .soldout-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.5));font-size:1.2rem}
+.product-card .soldout-overlay.hidden{display:none}
+.product-card .item-nominal{margin:0 0 .25rem 0;font-weight:700}
+.product-card .item-stock{margin:0 0 .5rem 0}
+.order-btn{transition:transform .12s ease,box-shadow .12s ease}
+.order-btn.ordered{transform:scale(.98);box-shadow:0 8px 20px rgba(0,0,0,0.4)}
+
+/* hero styling */
+.hero{padding:2.2rem;background:linear-gradient(180deg,rgba(18,24,42,0.6),rgba(6,8,14,0.2));border-radius:12px;margin-bottom:1rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:420px;height:420px;right:-100px;top:-120px;background:radial-gradient(circle at 30% 30%, rgba(124,58,237,0.12), transparent 40%), radial-gradient(circle at 70% 70%, rgba(37,99,235,0.08), transparent 30%);filter:blur(28px);transform:rotate(18deg);opacity:.95}
+.hero-inner{display:flex;gap:1.2rem;align-items:center}
+.hero-copy h1{font-family:Poppins,Inter,system-ui;font-size:28px;margin:0 0 .6rem 0}
+.lead{color:var(--muted);margin:0 0 1rem 0}
+.hero-cta .primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:.6rem 1rem;border-radius:10px;border:0;font-weight:700}
+.hero-cta .outline{border:1px solid rgba(255,255,255,0.05);background:transparent;padding:.55rem .9rem;border-radius:10px}
+.hero-art{flex:0 0 260px}
+.art-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:.8rem;border-radius:12px;color:var(--muted);box-shadow:0 10px 26px rgba(8,12,20,0.6)}
+.art-title{font-weight:700;color:var(--accent)}
+.art-price{font-weight:800;color:var(--accent-2);margin-top:.6rem}
+
+/* small screens */
+@media (max-width:760px){.hero-inner{flex-direction:column;align-items:flex-start}.hero-art{width:100%}.hero-copy h1{font-size:22px}}
 
 /* icons in sidebar */
 .sidebar .icon{width:18px;height:18px;margin-right:.5rem;vertical-align:middle;color:var(--muted)}
@@ -26,7 +53,6 @@
 
 /* focus states */
 .search-input:focus, .control-input:focus, .btn:focus, .nav-link:focus, .s-link:focus{outline:2px solid rgba(124,58,237,0.18);outline-offset:2px}
-
 /* Admin sidebar */
 .admin-layout{display:flex;gap:1rem;margin-top:1rem}
 .sidebar{width:220px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:1rem;border-radius:10px}

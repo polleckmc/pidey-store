@@ -35,8 +35,23 @@
 
   <main class="container">
     <section class="hero">
-      <h2>Top Up Game cepat dan aman</h2>
-      <p>Harga bersaing, layanan cepat. Order langsung via WhatsApp.</p>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1>Top Up Game Cepat &amp; Aman</h1>
+          <p class="lead">Pilih game, tentukan nominal, dan pesan langsung melalui WhatsApp. Layanan cepat, harga kompetitif.</p>
+          <div class="hero-cta">
+            <button id="ctaBrowse" class="btn primary">Lihat Paket</button>
+            <a href="https://wa.me/6285334679379" class="btn outline">Chat Admin</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="art-card">
+            <div class="art-title">Featured</div>
+            <div class="art-item">Mobile Legends • 355 Diamonds • Rp 50.000</div>
+            <div class="art-price">Rp 50.000</div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section>
@@ -72,9 +87,10 @@
 
   <template id="item-template">
     <div class="card product-card">
+      <div class="price-badge">Rp 0</div>
+      <div class="soldout-overlay hidden">HABIS</div>
       <div class="card-body">
         <h4 class="item-nominal"></h4>
-        <p class="item-price"></p>
         <p class="item-stock muted"></p>
         <input type="text" class="buyer-name" placeholder="Nama pembeli (wajib)" />
         <button class="order-btn">Order Sekarang</button>
