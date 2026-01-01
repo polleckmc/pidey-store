@@ -78,9 +78,8 @@ function renderGameList(filter){
       renderProductGrid(g.id);
       const titleEl = document.getElementById('chooseTitle');
       if(titleEl) titleEl.textContent = `Paket untuk ${g.name}`;
-      if(typeof window !== 'undefined' && typeof window.scrollTo === 'function'){
-        window.scrollTo({ top: 300, behavior: 'smooth' });
-      }
+      try{ window.scrollTo({ top: 300, behavior: 'smooth' }); }catch(e){}
+      // some environments (jsdom) may not implement scrollTo; ignore errors
     });
     container.appendChild(node);
   });
