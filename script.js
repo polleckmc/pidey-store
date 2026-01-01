@@ -352,11 +352,22 @@ function escapeHtml(s){
 }
 
 // Small helper to show a specific admin panel
+function animateElEnter(el){
+  if(!el) return;
+  el.classList.remove('hidden');
+  el.classList.add('card-enter');
+  requestAnimationFrame(()=>{
+    el.classList.add('card-enter-active');
+    el.classList.remove('card-enter');
+    setTimeout(()=> el.classList.remove('card-enter-active'), 220);
+  });
+}
+
 function showPanel(id){
   const panels = document.querySelectorAll('.panel');
   panels.forEach(p => p.classList.add('hidden'));
   const el = document.getElementById(id);
-  if(el) el.classList.remove('hidden');
+  if(el) animateElEnter(el);
   // update active link
   document.querySelectorAll('.s-link').forEach(a=>{
     a.classList.toggle('active', a.dataset.target === id);

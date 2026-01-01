@@ -3,10 +3,29 @@
 
 /* Navbar */
 .nav-wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo-icon{width:28px;height:28px;vertical-align:middle;margin-right:.45rem}
 .main-nav{display:flex;align-items:center;gap:.6rem}
-.nav-link{color:inherit;padding:.45rem .6rem;border-radius:8px;transition:background .12s}
-.nav-link:hover{background:rgba(255,255,255,0.02)}
-.search-input{padding:.4rem .6rem;border-radius:8px;border:1px solid rgba(255,255,255,0.05);background:var(--card);color:inherit;min-width:220px}
+.nav-link{color:inherit;padding:.45rem .6rem;border-radius:8px;transition:background .12s, transform .12s}
+.nav-link:hover{background:rgba(255,255,255,0.02);transform:translateY(-2px)}
+.search-wrap{display:flex;align-items:center;gap:.5rem;background:var(--card);padding:.2rem;border-radius:8px}
+.icon.small{width:18px;height:18px;color:var(--muted)}
+.search-input{padding:.4rem .6rem;border-radius:6px;border:0;background:transparent;color:inherit;min-width:220px}
+
+/* Card & Panel animations */
+.card{transition:transform .18s ease,box-shadow .18s ease,opacity .18s ease}
+.card-enter{opacity:0;transform:translateY(8px)}
+.card-enter-active{opacity:1;transform:translateY(0);transition:opacity .18s ease,transform .18s ease}
+
+.panel{opacity:1;transform:none;transition:opacity .22s ease,transform .22s ease}
+.panel.hidden{opacity:0;transform:translateY(8px);pointer-events:none}
+
+/* icons in sidebar */
+.sidebar .icon{width:18px;height:18px;margin-right:.5rem;vertical-align:middle;color:var(--muted)}
+.s-link{display:inline-flex;align-items:center;gap:.4rem}
+.s-link.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white}
+
+/* focus states */
+.search-input:focus, .control-input:focus, .btn:focus, .nav-link:focus, .s-link:focus{outline:2px solid rgba(124,58,237,0.18);outline-offset:2px}
 
 /* Admin sidebar */
 .admin-layout{display:flex;gap:1rem;margin-top:1rem}

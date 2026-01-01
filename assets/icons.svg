@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="icon-games" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2a2 2 0 00-2 2v1H8a4 4 0 00-4 4v4h4v2h8v-2h4v-4a4 4 0 00-4-4h-2V4a2 2 0 00-2-2zm0 4h2v2h-4V6h2z"/>
+  </symbol>
+  <symbol id="icon-tools" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M20.7 5.3l-2-2a1 1 0 00-1.4 0L15 5.6 14 4.6a1 1 0 00-1.4 0l-2 2A4 4 0 008 9.9V11l-1 1v2l1 1v1.1A4 4 0 0012.1 20l1.5-1.5 1.2 1.2 2.6-2.6a1 1 0 000-1.4L17.4 14l1.6-1.6a1 1 0 000-1.4l-2.3-2.3 3-3a1 1 0 000-1.4z"/>
+  </symbol>
+  <symbol id="icon-add" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"/>
+  </symbol>
+  <symbol id="icon-chat" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M20 2H4a2 2 0 00-2 2v14l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/>
+  </symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M21 20l-5.6-5.6A7 7 0 109 16.4L14 21zM11 6a5 5 0 110 10 5 5 0 010-10z"/>
+  </symbol>
+</svg>

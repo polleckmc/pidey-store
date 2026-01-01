@@ -14,10 +14,18 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <div class="brand">
-        <a href="index.html" class="logo"><img src="/favicon.svg" alt="Pidey" style="width:28px;height:28px;vertical-align:middle;margin-right:.5rem"> <span>Pidey Store</span></a>
+        <a href="index.html" class="logo" aria-label="Pidey Store home">
+          <svg class="logo-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-games"></use></svg>
+          <span>Pidey Store</span>
+        </a>
       </div>
       <div class="main-nav">
-        <input id="gameSearch" class="search-input" placeholder="Cari game atau server..." />
+        <label class="visually-hidden" for="gameSearch">Cari game</label>
+        <div class="search-wrap">
+          <svg class="icon small" aria-hidden="true"><use href="/assets/icons.svg#icon-search"></use></svg>
+          <input id="gameSearch" class="search-input" placeholder="Cari game atau server..." />
+        </div>
+
         <a href="#chooseTitle" class="nav-link">Paket</a>
         <a href="admin.html" class="nav-link">Admin</a>
         <a href="https://wa.me/6285334679379" class="nav-link btn">Chat WA</a>
