@@ -58,5 +58,54 @@ const DEFAULT_GAMES = [
       { nominal: 'Season Pass', price: 450000, stock: 5 },
       { nominal: 'Custom Pack', price: 0, stock: 4 }
     ]
+  },
+  {
+    id: 'genshin',
+    name: 'Genshin Impact',
+    active: true,
+    server: 'Global',
+    description: 'Top up Genesis Crystals Genshin Impact',
+    products: [
+      { nominal: '60 Crystals', price: 15000, stock: 10 },
+      { nominal: '300 Crystals', price: 75000, stock: 8 },
+      { nominal: '980 Crystals', price: 240000, stock: 5 },
+      { nominal: '1980 Crystals', price: 480000, stock: 3 },
+      { nominal: '3280 Crystals', price: 800000, stock: 2 },
+      { nominal: '6480 Crystals', price: 1600000, stock: 1 },
+      { nominal: 'Blessing of the Welkin Moon', price: 125000, stock: 6 },
+      { nominal: 'Custom Pack', price: 0, stock: 5 }
+    ]
+  },
+  {
+    id: 'hok',
+    name: 'Honor of Kings',
+    active: true,
+    server: 'Global',
+    description: 'Top up Hero Tokens Honor of Kings',
+    products: [
+      { nominal: '120 Tokens', price: 20000, stock: 10 },
+      { nominal: '610 Tokens', price: 100000, stock: 7 },
+      { nominal: '1200 Tokens', price: 200000, stock: 5 },
+      { nominal: '2500 Tokens', price: 400000, stock: 3 },
+      { nominal: '6500 Tokens', price: 1000000, stock: 1 },
+      { nominal: 'Custom Pack', price: 0, stock: 5 }
+    ]
+  },
+  {
+    id: 'codm',
+    name: 'Call of Duty Mobile',
+    active: true,
+    server: 'Global',
+    description: 'Top up CP Call of Duty Mobile',
+    products: [
+      { nominal: '60 CP', price: 10000, stock: 10 },
+      { nominal: '120 CP', price: 20000, stock: 8 },
+      { nominal: '240 CP', price: 40000, stock: 6 },
+      { nominal: '500 CP', price: 80000, stock: 4 },
+      { nominal: '1000 CP', price: 150000, stock: 2 },
+      { nominal: '2400 CP', price: 350000, stock: 1 },
+      { nominal: '5000 CP', price: 700000, stock: 0 },
+      { nominal: 'Custom Pack', price: 0, stock: 5 }
+    ]
   }
 ];

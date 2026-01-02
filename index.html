@@ -34,20 +34,22 @@
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-copy">
-          <h1>Top Up Game Cepat &amp; Aman</h1>
-          <p class="lead">Pilih game, tentukan nominal, dan pesan langsung melalui WhatsApp. Layanan cepat, harga kompetitif.</p>
-          <div class="hero-cta">
-            <button id="ctaBrowse" class="btn primary">Lihat Paket</button>
-            <a href="https://wa.me/6285334679379" class="btn outline">Chat Admin</a>
-          </div>
-        </div>
-        <div class="hero-art">
-          <div class="art-card">
-            <div class="art-title">Featured</div>
+  <main>
+    <section class="games-section">
+      <div class="container">
+        <h2>Pilih Game</h2>
+        <div id="gameList" class="games-grid"></div>
+      </div>
+    </section>
+
+    <section class="products-section hidden">
+      <div class="container">
+        <h2 id="chooseTitle">Pilih Paket</h2>
+        <button id="backToGames" class="btn outline">← Kembali ke Game</button>
+        <div id="productGrid" class="products-grid"></div>
+      </div>
+    </section>
+  </main>
             <div class="art-item">Mobile Legends • 355 Diamonds • Rp 50.000</div>
             <div class="art-price">Rp 50.000</div>
           </div>
@@ -76,32 +78,27 @@
   </main>
 
   <template id="game-template">
-    <div class="card game-card">
-      <div class="thumb" style="background-image:url('/assets/screenshots/default-game.jpg')" aria-hidden="true"></div>
-      <div class="card-body">
-        <h4 class="game-name"></h4>
+    <div class="game-card">
+      <div class="game-thumb" style="background-image:url('/assets/screenshots/default-game.jpg')" aria-hidden="true"></div>
+      <div class="game-info">
+        <h3 class="game-name"></h3>
         <p class="game-desc muted"></p>
         <div class="game-meta muted"></div>
-        <div class="meta-row">
-          <button class="btn small select-game">Lihat Paket</button>
-          <span class="badge">Game</span>
-        </div>
+        <button class="btn select-game">Pilih Paket</button>
       </div>
     </div>
   </template> 
 
   <template id="item-template">
-    <div class="card product-card">
-      <div class="thumb" style="background-image:url('/assets/screenshots/default-item.jpg')" aria-hidden="true"></div>
-      <div class="price-badge">Rp 0</div>
-      <div class="soldout-overlay hidden">HABIS</div>
-      <div class="card-body">
+    <div class="product-card">
+      <div class="product-thumb" style="background-image:url('/assets/screenshots/default-item.jpg')" aria-hidden="true"></div>
+      <div class="product-info">
         <h4 class="item-nominal"></h4>
         <p class="item-stock muted"></p>
-        <div class="meta-row">
-          <input type="text" class="buyer-name" placeholder="Nama pembeli (wajib)" />
-          <button class="order-btn">Order Sekarang</button>
-        </div>
+        <div class="price-badge">Rp 0</div>
+        <div class="soldout-overlay hidden">HABIS</div>
+        <input type="text" class="buyer-name" placeholder="Nama pembeli" />
+        <button class="order-btn btn primary">Order Sekarang</button>
       </div>
     </div>
   </template>

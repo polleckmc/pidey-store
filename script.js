@@ -100,7 +100,7 @@ function renderGameList(filter){
     node.querySelector('.game-name').textContent = g.name;
     node.querySelector('.game-desc').textContent = g.description || '';
     node.querySelector('.game-meta').textContent = g.server ? `Server: ${g.server}` : '';
-    const thumb = node.querySelector('.thumb');
+    const thumb = node.querySelector('.game-thumb');
     if(thumb) thumb.style.backgroundImage = `url('${getThumbUrl(g).replace(/'/g, "\\'")}')`;
     const btn = node.querySelector('.select-game');
     if(!g.active) btn.disabled = true;
@@ -109,7 +109,8 @@ function renderGameList(filter){
       renderProductGrid(g.id);
       const titleEl = document.getElementById('chooseTitle');
       if(titleEl) titleEl.textContent = `Paket untuk ${g.name}`;
-      try{ window.scrollTo({ top: 300, behavior: 'smooth' }); }catch(e){}
+      showProductsSection();
+      try{ window.scrollTo({ top: 0, behavior: 'smooth' }); }catch(e){}
       // some environments (jsdom) may not implement scrollTo; ignore errors
     });
     container.appendChild(node);
@@ -161,7 +162,7 @@ function renderProductGrid(gameId){
     const nameInput = node.querySelector('.buyer-name');
     const orderBtn = node.querySelector('.order-btn');
     const soldOverlay = node.querySelector('.soldout-overlay');
-    const thumb = node.querySelector('.thumb');
+    const thumb = node.querySelector('.product-thumb');
     if(thumb) thumb.style.backgroundImage = `url('${getThumbUrl(game, it).replace(/'/g, "\\'")}')`;
 
     nominalEl.textContent = it.nominal;
@@ -522,6 +523,18 @@ function showPanel(id){
   });
 }
 
+// Toggle sections
+function showGamesSection() {
+  document.querySelector('.games-section').classList.remove('hidden');
+  document.querySelector('.products-section').classList.add('hidden');
+  SELECTED_GAME = null;
+}
+
+function showProductsSection() {
+  document.querySelector('.games-section').classList.add('hidden');
+  document.querySelector('.products-section').classList.remove('hidden');
+}
+
 // Initialize based on page
 window.addEventListener('DOMContentLoaded', ()=>{
   // wire search if present
@@ -529,6 +542,10 @@ window.addEventListener('DOMContentLoaded', ()=>{
   if(search) search.addEventListener('input', (e)=> renderGameList(e.target.value.trim()));
   renderGameList();
   initAdmin();
+
+  // Back to games button
+  const backBtn = document.getElementById('backToGames');
+  if(backBtn) backBtn.addEventListener('click', showGamesSection);
 
   // Admin UI is populated only after successful login; bindings occur in bindAdminUI().
 });
