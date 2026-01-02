@@ -10,6 +10,21 @@ function numberFormat(n){
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
+// Small SVG placeholder generator (returns data URL)
+function svgPlaceholder(text, w=800, h=450, accent='#8b5cf6', fg='#9aa4b2'){
+  const t = escapeHtml(String(text || '')).substring(0,36);
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' viewBox='0 0 ${w} ${h}'><rect width='100%' height='100%' fill='#071226'/><g fill='none' stroke='${accent}' stroke-width='6'><rect x='20' y='20' width='${w-40}' height='${h-40}' rx='12' stroke-opacity='0.14' /></g><text x='50%' y='50%' fill='${fg}' font-family='Inter, Arial' font-size='28' text-anchor='middle' dominant-baseline='central'>${t}</text></svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+// Resolve thumbnail URL for product or game
+function getThumbUrl(game, product){
+  if(product && product.image) return product.image;
+  if(game && game.image) return game.image;
+  const label = (product && (product.nominal || product.name)) || (game && game.name) || 'Item';
+  return svgPlaceholder(label);
+}
+
 // Load games (migrate legacy format if found)
 function loadGames(){
   // Prefer new key
@@ -71,6 +86,8 @@ function renderGameList(filter){
     node.querySelector('.game-name').textContent = g.name;
     node.querySelector('.game-desc').textContent = g.description || '';
     node.querySelector('.game-meta').textContent = g.server ? `Server: ${g.server}` : '';
+    const thumb = node.querySelector('.thumb');
+    if(thumb) thumb.style.backgroundImage = `url('${getThumbUrl(g).replace(/'/g, "\\'")}')`;
     const btn = node.querySelector('.select-game');
     if(!g.active) btn.disabled = true;
     btn.addEventListener('click', ()=>{
@@ -130,6 +147,8 @@ function renderProductGrid(gameId){
     const nameInput = node.querySelector('.buyer-name');
     const orderBtn = node.querySelector('.order-btn');
     const soldOverlay = node.querySelector('.soldout-overlay');
+    const thumb = node.querySelector('.thumb');
+    if(thumb) thumb.style.backgroundImage = `url('${getThumbUrl(game, it).replace(/'/g, "\\'")}')`;
 
     nominalEl.textContent = it.nominal;
     priceBadge.textContent = `Rp ${numberFormat(it.price)}`;
@@ -264,8 +283,7 @@ function renderAdminGames(){
       pRow.innerHTML = `
         <input class="control-input p-nominal" value="${escapeHtml(p.nominal)}" />
         <input class="control-input p-price" type="number" value="${p.price}" />
-        <input class="control-input p-stock" type="number" value="${p.stock}" />
-        <button class="btn p-save">Simpan</button>
+        <input class="control-input p-stock" type="number" value="${p.stock}" />        <input class="control-input p-image" placeholder="Image URL (opsional)" value="${escapeHtml(p.image || '')}" />        <button class="btn p-save">Simpan</button>
         <button class="btn p-del">Hapus</button>
       `;
       const saveBtn = pRow.querySelector('.p-save');
@@ -277,6 +295,7 @@ function renderAdminGames(){
         gg.products[idx].nominal = pRow.querySelector('.p-nominal').value || gg.products[idx].nominal;
         gg.products[idx].price = Number(pRow.querySelector('.p-price').value) || 0;
         gg.products[idx].stock = Number(pRow.querySelector('.p-stock').value) || 0;
+        gg.products[idx].image = pRow.querySelector('.p-image').value.trim() || gg.products[idx].image || '';
         saveGames(all);
         renderAdminGames();
         renderGameList();
@@ -302,16 +321,18 @@ function renderAdminGames(){
       <input id="new_nom_${gi}" class="control-input" placeholder="Nominal" />
       <input id="new_price_${gi}" class="control-input" placeholder="Harga" type="number" />
       <input id="new_stock_${gi}" class="control-input" placeholder="Stok" type="number" />
+      <input id="new_image_${gi}" class="control-input" placeholder="Image URL (opsional)" />
       <button class="btn add-pkg">Tambah Paket</button>
     `;
     addRow.querySelector('.add-pkg').addEventListener('click', ()=>{
       const nom = document.getElementById(`new_nom_${gi}`).value.trim();
       const price = Number(document.getElementById(`new_price_${gi}`).value) || 0;
       const stock = Number(document.getElementById(`new_stock_${gi}`).value) || 0;
+      const image = document.getElementById(`new_image_${gi}`).value.trim() || '';
       if(!nom){ alert('Nominal diperlukan'); return; }
       const all = loadGames();
       const gg = all.find(x=>x.id===g.id);
-      gg.products.push({ nominal: nom, price, stock });
+      gg.products.push({ nominal: nom, price, stock, image });
       saveGames(all);
       renderAdminGames();
       renderGameList();
@@ -409,10 +430,11 @@ function addNewGameFromForm(){
   const id = document.getElementById('new_id').value.trim() || slugify(name);
   if(!name || !id){ alert('Nama dan ID diperlukan'); return; }
   const server = document.getElementById('new_server').value.trim();
+  const image = document.getElementById('new_image') ? document.getElementById('new_image').value.trim() : '';
   const desc = document.getElementById('new_desc').value || '';
   const all = loadGames();
   if(all.find(x=>x.id === id)){ alert('ID sudah ada, gunakan ID unik'); return; }
-  all.push({ id, name, active: true, server, description: desc, products: [] });
+  all.push({ id, name, active: true, server, image: image || '', description: desc, products: [] });
   saveGames(all);
   renderAdminGames();
   renderGameList();
