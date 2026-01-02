@@ -57,30 +57,38 @@
   <!-- Include product templates so headless tests can render bundles -->
   <template id="game-template">
     <div class="card game-card">
+      <div class="thumb" style="background-image:url('/assets/screenshots/default-game.jpg')" aria-hidden="true"></div>
       <div class="card-body">
         <h4 class="game-name"></h4>
         <p class="game-desc muted"></p>
         <div class="game-meta muted"></div>
-        <button class="btn select-game">Lihat Paket</button>
+        <div class="meta-row">
+          <button class="btn small select-game">Lihat Paket</button>
+          <span class="badge">Game</span>
+        </div>
       </div>
     </div>
   </template>
 
   <template id="item-template">
     <div class="card product-card">
+      <div class="thumb" style="background-image:url('/assets/screenshots/default-item.jpg')" aria-hidden="true"></div>
       <div class="price-badge">Rp 0</div>
       <div class="soldout-overlay hidden">HABIS</div>
       <div class="card-body">
         <h4 class="item-nominal"></h4>
         <p class="item-stock muted"></p>
-        <input type="text" class="buyer-name" placeholder="Nama pembeli (wajib)" />
-        <button class="order-btn">Order Sekarang</button>
+        <div class="meta-row">
+          <input type="text" class="buyer-name" placeholder="Nama pembeli (wajib)" />
+          <button class="order-btn">Order Sekarang</button>
+        </div>
       </div>
     </div>
   </template>
 
   <script src="data.js"></script>
   <script src="script.js"></script>
+  <script src="theme.js"></script>
   <script>
     (async function(){
       // Avoid UI blocking dialogs in headless test
