@@ -17,13 +17,25 @@ function svgPlaceholder(text, w=800, h=450, accent='#8b5cf6', fg='#9aa4b2'){
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
+function fileToDataURL(file){
+  return new Promise((res, rej)=>{
+    if(typeof FileReader === 'undefined'){ rej(new Error('FileReader not supported')); return; }
+    try{
+      const reader = new FileReader();
+      reader.onload = ()=> res(reader.result);
+      reader.onerror = ()=> rej(new Error('File read error'));
+      reader.readAsDataURL(file);
+    }catch(err){ rej(err); }
+  });
+}
+
 // Resolve thumbnail URL for product or game
 function getThumbUrl(game, product){
   if(product && product.image) return product.image;
   if(game && game.image) return game.image;
   const label = (product && (product.nominal || product.name)) || (game && game.name) || 'Item';
   return svgPlaceholder(label);
-}
+} 
 
 // Load games (migrate legacy format if found)
 function loadGames(){
@@ -260,14 +272,15 @@ function renderAdminGames(){
 
     const title = document.createElement('div');
     title.className = 'row';
-    title.innerHTML = `<input class="control-input name-input" value="${g.name}" /> <span class="muted">(${g.id})</span>`;
+    title.innerHTML = `<img class="img-preview" src="${getThumbUrl(g)}" alt="${escapeHtml(g.name)}" style="width:56px;height:40px;object-fit:cover;border-radius:6px;margin-right:.6rem;vertical-align:middle" /> <input class="control-input name-input" value="${g.name}" /> <span class="muted">(${g.id})</span> <button class="btn small upload-game-image">Upload</button> <input type="file" accept="image/*" class="hidden file-input-game" />`; 
 
     const top = document.createElement('div');
     top.className = 'row';
     top.innerHTML = `
       <label>Active: <input class="toggle active-checkbox" type="checkbox" ${g.active? 'checked': ''} /></label>
       <label>Server: <input class="control-input server-input" value="${g.server || ''}" /></label>
-    `;
+      <label>Image: <input class="control-input game-image-input" value="${escapeHtml(g.image || '')}" placeholder="Image URL (opsional)" /></label>
+    `; 
 
     const desc = document.createElement('div');
     desc.className = 'row';
@@ -281,11 +294,16 @@ function renderAdminGames(){
       const pRow = document.createElement('div');
       pRow.className = 'row';
       pRow.innerHTML = `
+        <img class="p-preview" src="${getThumbUrl(g,p)}" alt="${escapeHtml(p.nominal || p.name || '')}" style="width:42px;height:30px;object-fit:cover;border-radius:6px;margin-right:.5rem;vertical-align:middle" />
         <input class="control-input p-nominal" value="${escapeHtml(p.nominal)}" />
         <input class="control-input p-price" type="number" value="${p.price}" />
-        <input class="control-input p-stock" type="number" value="${p.stock}" />        <input class="control-input p-image" placeholder="Image URL (opsional)" value="${escapeHtml(p.image || '')}" />        <button class="btn p-save">Simpan</button>
+        <input class="control-input p-stock" type="number" value="${p.stock}" />
+        <input class="control-input p-image" placeholder="Image URL (opsional)" value="${escapeHtml(p.image || '')}" />
+        <button class="btn small upload-p-image">Upload</button>
+        <input type="file" accept="image/*" class="hidden file-input-p" />
+        <button class="btn p-save">Simpan</button>
         <button class="btn p-del">Hapus</button>
-      `;
+      `; 
       const saveBtn = pRow.querySelector('.p-save');
       const delBtn = pRow.querySelector('.p-del');
       saveBtn.addEventListener('click', ()=>{
@@ -312,6 +330,22 @@ function renderAdminGames(){
         renderGameList();
       });
 
+      // Upload handlers for product image
+      const upBtn = pRow.querySelector('.upload-p-image');
+      const fIn = pRow.querySelector('.file-input-p');
+      if(upBtn && fIn){
+        upBtn.addEventListener('click', ()=> fIn.click());
+        fIn.addEventListener('change', async (e)=>{
+          const f = e.target.files && e.target.files[0]; if(!f) return;
+          try{
+            const data = await fileToDataURL(f);
+            pRow.querySelector('.p-image').value = data;
+            const all = loadGames(); const gg = all.find(x=>x.id===g.id);
+            if(gg && gg.products && gg.products[idx]){ gg.products[idx].image = data; saveGames(all); renderAdminGames(); renderGameList(); }
+          }catch(err){ alert('Upload failed: ' + err.message); }
+        });
+      }
+
       prodList.appendChild(pRow);
     });
 
@@ -322,6 +356,8 @@ function renderAdminGames(){
       <input id="new_price_${gi}" class="control-input" placeholder="Harga" type="number" />
       <input id="new_stock_${gi}" class="control-input" placeholder="Stok" type="number" />
       <input id="new_image_${gi}" class="control-input" placeholder="Image URL (opsional)" />
+      <button class="btn small upload-new-image" data-gi="${gi}">Upload</button>
+      <input type="file" accept="image/*" class="hidden new-file-input" data-gi="${gi}" />
       <button class="btn add-pkg">Tambah Paket</button>
     `;
     addRow.querySelector('.add-pkg').addEventListener('click', ()=>{
@@ -337,6 +373,17 @@ function renderAdminGames(){
       renderAdminGames();
       renderGameList();
     });
+
+    // wire upload for new product image
+    const uploadNewBtn = addRow.querySelector('.upload-new-image');
+    const newFileInput = addRow.querySelector('.new-file-input');
+    if(uploadNewBtn && newFileInput){
+      uploadNewBtn.addEventListener('click', ()=> newFileInput.click());
+      newFileInput.addEventListener('change', async (e)=>{
+        const f = e.target.files && e.target.files[0]; if(!f) return;
+        try{ const data = await fileToDataURL(f); document.getElementById(`new_image_${gi}`).value = data; }catch(err){ alert('Upload failed: ' + err.message); }
+      });
+    }
 
     const btnRow = document.createElement('div');
     btnRow.className = 'row';
@@ -356,6 +403,7 @@ function renderAdminGames(){
       gg.server = top.querySelector('.server-input').value || '';
       gg.active = !!top.querySelector('.active-checkbox').checked;
       gg.description = desc.querySelector('.desc-input').value || '';
+      gg.image = top.querySelector('.game-image-input').value.trim() || gg.image || '';
       saveGames(all);
       renderAdminGames();
       renderGameList();
