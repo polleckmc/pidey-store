@@ -547,5 +547,11 @@ window.addEventListener('DOMContentLoaded', ()=>{
   const backBtn = document.getElementById('backToGames');
   if(backBtn) backBtn.addEventListener('click', showGamesSection);
 
+  // Hero CTA button
+  const ctaBtn = document.getElementById('ctaBrowse');
+  if(ctaBtn) ctaBtn.addEventListener('click', ()=>{
+    document.querySelector('.games-section').scrollIntoView({ behavior: 'smooth' });
+  });
+
   // Admin UI is populated only after successful login; bindings occur in bindAdminUI().
 });
