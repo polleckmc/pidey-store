@@ -3,12 +3,12 @@
 :root{
   --bg:#060610;
   --card:#0b0f1a;
-  --accent:#8b5cf6;
-  --accent-2:#00d4ff;
+  --accent:#ff4757; /* Changed to red */
+  --accent-2:#ffa726; /* Changed to orange */
   --muted:#9aa4b2;
   --glass:rgba(255,255,255,0.02);
-  --neon: rgba(139,92,246,0.12);
-  --accent-glow: 0 8px 30px rgba(139,92,246,0.16), 0 0 40px rgba(0,212,255,0.06);
+  --neon: rgba(255,71,87,0.12); /* Updated to match new accent */
+  --accent-glow: 0 8px 30px rgba(255,71,87,0.16), 0 0 40px rgba(255,167,38,0.06); /* Updated glow */
   --anim-medium: 180ms;
   --anim-slow: 300ms;
   --ease-bouncy: cubic-bezier(.2,.9,.2,1);
@@ -16,9 +16,9 @@
 
 /* Theme variants */
 body[data-theme="alt"]{
-  --accent: #ff6b6b;
-  --accent-2: #ffb86b;
-  --accent-glow: 0 10px 40px rgba(255,107,107,0.12), 0 0 40px rgba(255,184,107,0.06);
+  --accent: #e74c3c; /* Darker red */
+  --accent-2: #f39c12; /* Yellow-orange */
+  --accent-glow: 0 10px 40px rgba(231,76,60,0.12), 0 0 40px rgba(243,156,18,0.06);
 }
 
 *{box-sizing:border-box}
