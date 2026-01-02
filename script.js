@@ -34,9 +34,9 @@ function getThumbUrl(game, product){
   if(product && product.image) return product.image;
   if(game && game.image) return game.image;
   const label = (product && (product.nominal || product.name)) || (game && game.name) || 'Item';
-  // Use Unsplash random image based on game name or product
-  const query = game ? game.name : label;
-  return `https://source.unsplash.com/random/800x450/?${encodeURIComponent(query)}`;
+  // Use Lorem Picsum with seed based on label for consistent images
+  const seed = encodeURIComponent(label);
+  return `https://picsum.photos/800/450?random=${seed}`;
 } 
 
 // Load games (migrate legacy format if found)
