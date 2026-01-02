@@ -34,7 +34,9 @@ function getThumbUrl(game, product){
   if(product && product.image) return product.image;
   if(game && game.image) return game.image;
   const label = (product && (product.nominal || product.name)) || (game && game.name) || 'Item';
-  return svgPlaceholder(label);
+  // Use Unsplash random image based on game name or product
+  const query = game ? game.name : label;
+  return `https://source.unsplash.com/random/800x450/?${encodeURIComponent(query)}`;
 } 
 
 // Load games (migrate legacy format if found)
